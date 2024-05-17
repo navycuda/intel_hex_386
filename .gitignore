@@ -1,0 +1,12 @@
+# folders
+node_modules/
+.vscode/
+dist/
+
+
+# files
+package-lock.json
+.env.local
+.env.*.local
+.env
+*.tsbuildinfo
