@@ -19,6 +19,10 @@ export class AddressBlock{
   /** Bytes of Data, not records */
   length: number;
   records: Record[];
+  get endingAddress() { return this.startingAddress + this.length >>> 0; }
+  hasAbsoluteAddress(absoluteAddress:number):boolean{
+    return (absoluteAddress >= this.startingAddress && absoluteAddress <= this.endingAddress);
+  }
 
   constructor();
   constructor(record:Record);
@@ -38,6 +42,7 @@ export class AddressBlock{
       case RecordType.ExtendedLinearAddress:{
         if(this.startingAddress === undefined) {
           this.startingAddress = record.ela;
+          this.records.push(record);
           return true;
         }
         return false;
@@ -50,6 +55,7 @@ export class AddressBlock{
         return true;
       }
       case RecordType.EndOfFile:{
+        this.records.push(record);
         return true;
       }
       default:{
@@ -62,5 +68,17 @@ export class AddressBlock{
 
   serialize():string{
     return this.records.reduce((a,c)=>a + c.serialize(),'');
+  }
+
+
+
+  read(from:number):number{
+    const address = from & 0xFFFF;
+
+    
+
+
+
+    return 0xFF;
   }
 }

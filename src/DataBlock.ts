@@ -8,9 +8,15 @@ import { Record, RecordType } from "./Record.js";
  * extended linear address blocks.
  */
 export class DataBlock{
-  startingAddress: number|undefined;
-  length: number = 0;
-  addressBlocks: AddressBlock[] = [ new AddressBlock() ];
+  private startingAddress: number|undefined;
+  private length: number = 0;
+  private addressBlocks: AddressBlock[] = [ new AddressBlock() ];
+  private currentAddressBlock:AddressBlock;
+  private get endingAddress(){ return (this.startingAddress + this.length) >>> 0; }
+
+  hasAbsoluteAddress(absoluteAddress:number):boolean{
+    return (absoluteAddress >= this.startingAddress && absoluteAddress <= this.endingAddress);
+  }
 
 
   constructor();
@@ -21,13 +27,14 @@ export class DataBlock{
 
 
 
-  /**
+  /** #### Add Record
+   * Used for adding records to the data block
    * @param record if eof, will return true to allow records array to empty
    * @returns true if the record was accepted into the DataBlock
    */
   addRecord(record:Record):boolean{
     const { length, address, type } = record;
-    const currentAddress = () => this.startingAddress + this.length;
+    const currentAddress = () => (this.startingAddress + this.length) >>> 0;
     const currentAddressBlock = () => this.addressBlocks[this.addressBlocks.length - 1];
 
 
@@ -57,5 +64,24 @@ export class DataBlock{
 
   serialize():string{
     return this.addressBlocks.reduce((a,c)=>a+c.serialize(),'');
+  }
+
+
+  read(from:number):number{
+    if (from > this.endingAddress) {
+      throw new Error('Requested absolute address is not in this DataBlock');
+    }
+
+    for (const addressBlock of this.addressBlocks){
+      if(addressBlock.hasAbsoluteAddress(from)){
+        this.currentAddressBlock = addressBlock;
+        break;
+      }
+    }
+
+    
+
+
+    return 0xFF;
   }
 }

@@ -2,7 +2,7 @@
   "name": "intel_hex_386",
   "version": "1.0.0",
   "description": "Read and Write intel hex 386 files",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "license": "AGPL-version-3.0",
   "private": false,
@@ -19,7 +19,7 @@
   "keywords": [],
   "author": {
     "name": "NavyCuda Corporation",
-    "email": "navycuda@gmail.com",
+    "email": "navysupra@gmail.com",
     "url": "http://www.navycuda.ca"
   },
   "contributors": [],
