@@ -1,5 +1,7 @@
 # Intel Hex 386
 
+# IN DEVELOPMENT - NEEDS TESTING - DO NOT USE IN PRODUCTION CODE
+
 ## Introduction
 
 Intel Hex 386 is a typescript library for parsing intel hex files commonly used
