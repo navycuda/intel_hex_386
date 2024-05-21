@@ -1,6 +1,6 @@
 {
   "name": "intel_hex_386",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Read and Write intel hex 386 files",
   "main": "dist/index.js",
   "type": "module",
@@ -13,7 +13,7 @@
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/navycuda/intel_hex_386"
   },
   "bugs": "",
   "keywords": [],
@@ -25,7 +25,7 @@
   "contributors": [],
   "scripts": {
     "build": "tsc;",
-    "dev": "rm -rf dist; tsc; node dist/index.js"
+    "dev": "tsc; node dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",

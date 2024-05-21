@@ -22,7 +22,7 @@ currently does not have the capacity to generate an intel hex file from nothing.
 ## Installation
 
 ```bash
->npm install @navycuda/intel_hex_386
+npm install intel_hex_386
 ```
 
 
@@ -32,11 +32,11 @@ currently does not have the capacity to generate an intel hex file from nothing.
 ### Import ES Module
 #### Vanilla Javascript ES
 ```javascript
-import { IntelHex386 } from "@navycuda/intel_hex_386";
+import { IntelHex386 } from "intel_hex_386";
 ```
 #### TypeScript
 ```typescript
-import { IntelHex386, ByteOrder } from "@navycuda/intel_hex_386";
+import { IntelHex386, ByteOrder } from "intel_hex_386";
 ```
 
 
@@ -72,7 +72,7 @@ cursor.setByteOrder(ByteOrder.LittleEndian);
 ```
 #### Javascript
 ```javascript
-cursor.setByteOrder("LitteEndian");
+cursor.setByteOrder("LittleEndian");
 ```
 
 ### Using the cursor for dynamic sequential reads
