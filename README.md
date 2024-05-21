@@ -9,3 +9,8 @@ only utilizing extended linear address.
 
 ## How to use
 
+
+
+
+
+- Designed to work with the memory addresses of the records.

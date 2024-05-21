@@ -1,5 +1,4 @@
-import { AddressBlock } from "./AddressBlock.js";
-import { Cursor } from "./Cursor.js";
+import { Cursor } from "./cursor/Cursor.js";
 import { DataBlock } from "./DataBlock.js";
 import { Record, RecordType } from "./Record.js";
 import { getIntelHexRecordMatches } from "./Tools.js";
@@ -18,9 +17,7 @@ export class IntelHex386{
 
   constructor(intelHexDocument:string){
     const recordMatches = getIntelHexRecordMatches(intelHexDocument);
-    const records = recordMatches.map(rm=>{
-      return new Record(rm);
-    });
+    const records = recordMatches.map(rm => new Record(rm));
 
     const currentDataBlock = ():DataBlock => this.dataBlocks[this.dataBlocks.length - 1];
     for (const record of records){

@@ -79,9 +79,22 @@ export class DataBlock{
       }
     }
 
-    
+    const byte = this.currentAddressBlock.read(from);
+    return byte;
+  }
 
+  write(value:number,to:number){
+    if (to > this.endingAddress){
+      throw new Error('Requested Absolute address is not in this DataBlock');
+    }
 
-    return 0xFF;
+    for (const addressBlock of this.addressBlocks){
+      if(addressBlock.hasAbsoluteAddress(to)){
+        this.currentAddressBlock = addressBlock;
+        break;
+      }
+    }
+
+    this.currentAddressBlock.write(value,to);
   }
 }

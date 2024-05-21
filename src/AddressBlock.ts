@@ -15,13 +15,15 @@ import { Record, RecordType } from "./Record.js";
  * ```
  */
 export class AddressBlock{
-  startingAddress: number|undefined;
+  private startingAddress: number|undefined;
   /** Bytes of Data, not records */
-  length: number;
-  records: Record[];
-  get endingAddress() { return this.startingAddress + this.length >>> 0; }
+  private length: number = 0;
+  private records: Record[];
+  private currentRecord: Record;
+  private get endingAddress() { return (this.startingAddress + this.length) >>> 0; }
   hasAbsoluteAddress(absoluteAddress:number):boolean{
-    return (absoluteAddress >= this.startingAddress && absoluteAddress <= this.endingAddress);
+    const result = (absoluteAddress >= this.startingAddress && absoluteAddress < this.endingAddress);
+    return result;
   }
 
   constructor();
@@ -75,10 +77,27 @@ export class AddressBlock{
   read(from:number):number{
     const address = from & 0xFFFF;
 
+    for (const record of this.records){
+      if(record.hasAddress(address)){
+        this.currentRecord = record;
+        break;
+      }
+    }
     
+    const byte = this.currentRecord.read(address);
+    return byte;
+  }
 
+  write(value:number,to:number){
+    const address = to & 0xFFFF;
 
+    for (const record of this.records){
+      if(record.hasAddress(address)){
+        this.currentRecord = record;
+        break;
+      }
+    }
 
-    return 0xFF;
+    this.currentRecord.write(value,to);
   }
 }

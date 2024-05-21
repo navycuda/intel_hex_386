@@ -46,7 +46,11 @@ export class Record{
   data: Buffer
   checksum: number;
   get ela(){
-    return (this.data[0] << 24 >>> 0) + (this.data[1] << 16 >>> 0);
+    return (this.data[0] << 24 >>> 0) + (this.data[1] << 16 >>> 0) >>> 0;
+  }
+  get endingAddress() { return this.address + this.length >>> 0; }
+  hasAddress(address:number):boolean{
+    return (address >= this.address && address <= this.endingAddress);
   }
 
 
@@ -77,5 +81,16 @@ export class Record{
     const data = this.data.toString('hex').toUpperCase();
     const checksum = toHexFrom.integer(getChecksum(this),1);
     return `:${length}${address}${type}${data}${checksum}\r\n`;
+  }
+
+
+  read(from:number):number{
+    const index = from - this.address;
+    return this.data[index];
+  }
+
+  write(value:number,to:number):void{
+    const index = to - this.address;
+    this.data[index] = value & 0xFF; 
   }
 }
