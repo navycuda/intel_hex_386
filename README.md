@@ -120,6 +120,18 @@ for (let p = 0; p < packedValues; p++){
 ```
 
 ### Using the cursor to read specific types
+
+This packages is intended to handle reading and writing specific primative datatypes
+to and from the intel hex 386 file.
+
+- bytes
+- integers
+- fixed points
+- floats
+- strings
+
+Please see: [Cursor](docs/Cursor.md) for a detailed explaination of the type options.
+
 ```typescript
 const unsigned32BitInteger:number = (
   cursor

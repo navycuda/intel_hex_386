@@ -126,7 +126,7 @@ export class Cursor{
 
 
     function byte():number;
-    function byte(byteLengt:number):Buffer;
+    function byte(byteLength:number):Buffer;
     function byte(byteLength?:number):number|Buffer{
       if (!byteLength){
         return integer(false,1);
