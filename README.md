@@ -1,11 +1,28 @@
-# Intel Hex 386
+# Intel Hex 386 - Overview
 
 # IN DEVELOPMENT - NEEDS TESTING - DO NOT USE IN PRODUCTION CODE
 
-## Introduction
-
 Intel Hex 386 is a typescript library for parsing intel hex files commonly used
 for flashing microcontrollers.
+
+
+## Table of Contents
+
+### Brief
+- [Limitations](#limitations)
+- [Dependancies](#dependancies)
+- [Installation](#installation)
+- [Basics](#basics)
+  - [Instantiate](#instantiate)
+  - [Serialize](#serialize)
+- [Cursor](#the-cursor)
+  - [Set Byte Order](#set-byte-order)
+  - [Dynamic Length Sequential Reads](#using-the-cursor-for-dynamic-sequential-reads)
+  - [Read Types](#using-the-cursor-to-read-specific-types)
+
+### In Detail
+- [Cursor](docs/Cursor.md)
+
 
 ## Limitations
 
@@ -25,8 +42,6 @@ currently does not have the capacity to generate an intel hex file from nothing.
 npm install intel_hex_386
 ```
 
-
-
 ## Basics
 
 ### Import ES Module
@@ -41,17 +56,23 @@ import { IntelHex386, ByteOrder } from "intel_hex_386";
 
 
 ### Instantiate 
+Some intel hex files can include a crc, or additional information such as the byte order
+for the file. This data is not processed by this package.  Only the intel hex document
+is read from the string.  The parser is agnostic to anything else in the file and should
+only extract a continuous intel hex 386 document.
+
+If any record has an incorrect checksum the package will throw an error.
 ```typescript
 const intelHexFile:string = fs.readFileSync(filepath,'utf8');
 const intelHex386 = new IntelHex386(intelHexFile);
 ```
 
 ### Serialize
+Serialization generates a utf8 encoded string of the intel hex records.  During
+serialization the checksum for each record is calculated.
 ```typescript
 const intelHexSerialized:string = intelHex386.serialize();
 ```
-
-
 
 ## The Cursor
 Reading & Writing to the intel hex.
@@ -113,5 +134,3 @@ const unsigned32BitInteger:number[] = (
 ) // returns an array of 10, 32 bit integers 
 ```
 
-
-- Designed to work with the memory addresses of the records.
