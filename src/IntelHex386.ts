@@ -1,6 +1,6 @@
 import { Cursor } from "./cursor/Cursor.js";
 import { DataBlock } from "./DataBlock.js";
-import { Record, RecordType } from "./Record.js";
+import { Record } from "./Record.js";
 import { getIntelHexRecordMatches } from "./Tools.js";
 
 

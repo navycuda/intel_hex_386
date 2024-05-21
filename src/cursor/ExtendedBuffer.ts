@@ -21,6 +21,7 @@ export class ExtendedBuffer extends Buffer{
     Object.setPrototypeOf(this, ExtendedBuffer.prototype);
   }
 
+
   static from(arrayBuffer: ArrayBuffer | SharedArrayBuffer, byteOffset?: number, length?: number): ExtendedBuffer;
   static from(data: Uint8Array | ReadonlyArray<number>): ExtendedBuffer;
   static from(data: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>): ExtendedBuffer;
@@ -40,6 +41,13 @@ export class ExtendedBuffer extends Buffer{
       throw new TypeError('The "value" argument must be on of type string, buffer, array or array like object.');
     }
     Object.setPrototypeOf(buffer, ExtendedBuffer.prototype);
+    return buffer as ExtendedBuffer;
+  }
+
+
+  static alloc(size: number, fill?: string | Buffer | number, encoding?: BufferEncoding):ExtendedBuffer{
+    const buffer = Buffer.alloc(size,fill,encoding);
+    Object.setPrototypeOf(buffer,ExtendedBuffer.prototype);
     return buffer as ExtendedBuffer;
   }
 

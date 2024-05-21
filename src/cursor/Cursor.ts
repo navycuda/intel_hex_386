@@ -11,6 +11,7 @@ export enum IntegerByteOrder{
   LittleEndian = 'LE'
 }
 
+export type ByteOrderAsString = "BigEndian"|"LittleEndian";
 export type ByteLength = 1|2|3|4;
 export type AbsoluteAddress = string|number;
 
@@ -71,8 +72,6 @@ export class Cursor{
 
   constructor(dataBlocks:DataBlock[]){ this.dataBlocks= dataBlocks }
 
-
-
   private _setAbsoluteAddress(absoluteAddress:AbsoluteAddress):void{
     if (typeof absoluteAddress === 'string'){
       absoluteAddress = ncc.convert.toUIntFrom.hex(absoluteAddress);
@@ -98,7 +97,7 @@ export class Cursor{
   /** ### Set Byte Order
    * Must be set prior to any read/write operations
    */
-  setByteOrder(byteOrder:ByteOrder){
+  setByteOrder(byteOrder:ByteOrder|ByteOrderAsString){
     this.byteOrder = IntegerByteOrder[byteOrder];
     return this;
   }
@@ -189,12 +188,10 @@ export class Cursor{
     }
   
 
-
     function string(characterLength:number):string{
       const buffer = getExtendedBuffer(characterLength);
       return buffer.toString('utf-8');
     }
-
 
 
     return {
@@ -229,41 +226,61 @@ export class Cursor{
 
     function integer(value:number|number[],signed:boolean,byteLength:ByteLength){
       const u = signed ? '' : 'U';
+      const method = `write${u}Int${byteLength * 8}${byteOrder}` as keyof Buffer;
+
       if (Array.isArray(value)){
-        const buffer = Buffer.alloc(value.length * byteLength, 0x00);
+        const buffer = ExtendedBuffer.alloc(value.length * byteLength, 0x00);
         for (let v = 0; v < value.length; v++){
           const offset = v * byteLength;
-          buffer[`write${u}Int${byteOrder}`](value[v],offset,byteLength);
+          (buffer[method] as any)(value[v],offset,byteLength);
         }
-        return;
+        return writeValues(buffer);
       }
 
-      const buffer = Buffer.alloc(byteLength,0x00);
-      buffer[`write${u}Int${byteOrder}`](value,0,byteLength);
+      const buffer = ExtendedBuffer.alloc(byteLength,0x00);
+      (buffer[method] as any)(value,0,byteLength);
 
       writeValues(buffer);
     }
 
 
-
-    function fixedPoint(value:number|number[],signed:boolean,byteLength:ByteLength,scalar:Scalar){
-      
+    function fixedPoint(value:number|number[],signed:boolean,byteLength:ByteLength,scalar?:Scalar){
+      if (Array.isArray(value)){
+        const _value = value.map(v=>{
+          if (scalar){
+            return (v / (scalar.multiplier || 1)) + (-scalar.offset || 0);
+          }
+          return v;
+        })
+        return integer(_value,signed,byteLength);
+      }
+      if (scalar){
+        const _value = (value / (scalar.multiplier || 1)) + (-scalar.offset || 0);
+        return integer(_value,signed,byteLength);
+      }
+      return integer(value,signed,byteLength);
     }
 
 
-
-    function floatingPoint(value:number|number[],signed:boolean,byteLength:ByteLength){
-
+    function floatingPoint(value:number|number[],signed:boolean){
+      if (Array.isArray(value)){
+        const buffer = ExtendedBuffer.alloc(value.length * 4, 0x00);
+        for (let v = 0; v < value.length;v++){
+          const offset = v * 4;
+          buffer[`writeFloat${byteOrder}`](value[v],offset);
+        }
+        return writeValues(buffer);
+      }
+      const buffer = ExtendedBuffer.alloc(4,0xFF);
+      buffer[`writeFloat${byteOrder}`](value,0);
+      writeValues(buffer);
     }
-
-
 
 
     function string(str:string){
-
+      const buffer = Buffer.from(str,'utf8');
+      writeValues(buffer);
     }
-
-
 
 
     return {
@@ -273,6 +290,5 @@ export class Cursor{
       floatingPoint,
       string
     }
-
   }
 }

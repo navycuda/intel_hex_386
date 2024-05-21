@@ -32,6 +32,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "ncc_common": "file:../ncc_common"
+    "ncc_common": "^1.0.0"
   }
 }
