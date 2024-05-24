@@ -7,6 +7,12 @@
 
 The cursor is how the byte data of the intel hex file is read or written to.
 
+## Table of Contents
+
+- [Instantiation](#instantiation)
+- [Setting the Byte Order](#setting-the-byte-order)
+- [Reading the Bytes](#reading-the-bytes)
+- [Writing the Bytes](#writing-the-bytes)
 
 
 ## Instantiation
@@ -102,8 +108,6 @@ Read a string of characters.
 
 #### returns (string)
 
-
-
 ___
 ## Writing the Bytes
 
@@ -116,11 +120,11 @@ let write = cursor.write('0x12345678');
 ```
 
 #### returns:
-* [byte]()
-* [integer]()
-* [fixedPoint]()
-* [floatingPoint]()
-* [string]()
+* [byte](#writetobytevalue)
+* [integer](#writetointegervaluesignedbytelength)
+* [fixedPoint](#writetofixedpointvaluesignedbytelengthscalar)
+* [floatingPoint](#writetofloatingpointvalue)
+* [string](#writetostringstr)
 
 ### write(to).byte(value)
 - 'value' (number|number[]) & 0xFF: The value or values to be written as bytes.  All values will be truncated to a byte.
