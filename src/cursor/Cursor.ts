@@ -262,7 +262,7 @@ export class Cursor{
     }
 
 
-    function floatingPoint(value:number|number[],signed:boolean){
+    function floatingPoint(value:number|number[]){
       if (Array.isArray(value)){
         const buffer = ExtendedBuffer.alloc(value.length * 4, 0x00);
         for (let v = 0; v < value.length;v++){
