@@ -154,3 +154,10 @@ of the scalar and writes that value to the binary.
 Write floating point values.
 
 #### returns void
+
+### write(to).string(str)
+- 'stg' (string): The string to write to the binary.  Encoding is UTF8.
+
+Write a string to the binary.  Truncating or padding the string needs to be handled externally.
+
+#### returns void
