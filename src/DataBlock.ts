@@ -1,7 +1,6 @@
 import { AddressBlock } from "./AddressBlock.js";
 import { Record, RecordType } from "./Record.js";
 
-
 /** ### Data Block
  * #### aka Block Data Structure
  * A block of consecutive bytes arranged into the appropriate

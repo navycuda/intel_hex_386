@@ -1,6 +1,8 @@
 import { IntelHexMatch } from "./Tools.js";
 import ncc from "ncc_common";
 
+
+
 export enum RecordType{
   Data = 0x00,
   EndOfFile = 0x01,
@@ -8,6 +10,12 @@ export enum RecordType{
   StartSegmentAddress = 0x03,     // Not implemented
   ExtendedLinearAddress = 0x04,
   StartLinearAddress = 0x05       // Not implemented
+}
+
+export interface NewRecord{
+  address: number;
+  type: RecordType;
+  data: Buffer;
 }
 
 /** two's complement checksum for intelhex records */
@@ -53,8 +61,17 @@ export class Record{
     return (address >= this.address && address <= this.endingAddress);
   }
 
-
-  constructor(intelHexMatch:IntelHexMatch){
+  constructor(intelHexMatch:IntelHexMatch);
+  constructor(intelHexMatch:null,newRecord:NewRecord);
+  constructor(intelHexMatch:IntelHexMatch|null,newRecord?:NewRecord){
+    if (newRecord){
+      this.length = newRecord.data.length;
+      this.address = newRecord.address & 0xFFFF;
+      this.type = newRecord.type;
+      this.data = newRecord.data;
+      this.checksum = getChecksum(this);
+      return;
+    }
     const { length, address, type, data, checksum } = intelHexMatch
 
     this.length = parseInt(length,16);
@@ -92,5 +109,19 @@ export class Record{
   write(value:number,to:number):void{
     const index = to - this.address;
     this.data[index] = value & 0xFF; 
+  }
+
+
+  /** #### End of File 
+   * Create an end of file record.  Used for generating new intel hex 386 objects.
+   */
+  static get EoF():Record{
+    return new Record({
+      length: '00',
+      address: '0000',
+      type: '01',
+      data: '',
+      checksum: 'FF'
+    });
   }
 }

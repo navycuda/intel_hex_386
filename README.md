@@ -15,6 +15,7 @@ for flashing microcontrollers.
 - [Basics](#basics)
   - [Instantiate](#instantiate)
   - [Serialize](#serialize)
+  - [From](#from)
 - [Cursor](#the-cursor)
   - [Set Byte Order](#set-byte-order)
   - [Dynamic Length Sequential Reads](#using-the-cursor-for-dynamic-sequential-reads)
@@ -29,6 +30,9 @@ for flashing microcontrollers.
 This utility currently only works with extended linear address intel hex files.
 It is also designed only to deal with intel hex files that already exist, it 
 currently does not have the capacity to generate an intel hex file from nothing.
+
+However, it is possible to generate a intel hex file from binary if the block
+data structure is known.
 
 
 ## Dependancies
@@ -146,3 +150,28 @@ const unsigned32BitInteger:number[] = (
 ) // returns an array of 10, 32 bit integers 
 ```
 
+## From
+
+### Static Method
+
+Create a new intel hex 386 from an array of objects containing the starting address and buffer for that starting address.
+
+```typescript
+import { IntelHex386, BlockDataStructure } from "intel_hex_386";
+
+const block1:BlockDataStructure = {
+  address: 0x80020000,
+  binary: Buffer.from([ 1, 2, 3, 4])
+}
+const block2:BlockDataStructure = {
+  address: 0x802C0700,
+  binary: Buffer.from([ 5, 6, 7, 8])
+}
+
+const blockDataStructure:BlockDataStructure[] = [
+  block1,
+  block2
+];
+
+const generatedIntelHex = IntelHex386.createFrom(blockDataStructure);
+```
