@@ -58,6 +58,7 @@ export class Record{
   }
   get endingAddress() { return this.address + this.length >>> 0; }
   hasAddress(address:number):boolean{
+    address &= 0xFFFF;
     return (address >= this.address && address <= this.endingAddress);
   }
 
@@ -105,11 +106,13 @@ export class Record{
 
 
   read(from:number):number{
+    from &= 0xFFFF;
     const index = from - this.address;
     return this.data[index];
   }
 
   write(value:number,to:number):void{
+    to &= 0xFFFF;
     const index = to - this.address;
     this.data[index] = value & 0xFF; 
   }

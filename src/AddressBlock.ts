@@ -89,10 +89,8 @@ export class AddressBlock{
   }
 
   write(value:number,to:number){
-    const address = to & 0xFFFF;
-
     for (const record of this.records){
-      if(record.hasAddress(address)){
+      if(record.hasAddress(to)){
         this.currentRecord = record;
         break;
       }
