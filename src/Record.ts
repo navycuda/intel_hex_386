@@ -64,6 +64,9 @@ export class Record{
   constructor(intelHexMatch:IntelHexMatch);
   constructor(intelHexMatch:null,newRecord:NewRecord);
   constructor(intelHexMatch:IntelHexMatch|null,newRecord?:NewRecord){
+    if (!intelHexMatch && !newRecord) {
+      throw new Error("Nothing to instantiate record with");
+    }
     if (newRecord){
       this.length = newRecord.data.length;
       this.address = newRecord.address & 0xFFFF;

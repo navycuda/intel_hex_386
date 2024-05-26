@@ -8,7 +8,10 @@
     "checkJs": true,
     "allowJs": true,
     "declaration": true,
-    "baseUrl": ".",
+    "declarationDir": "./dist/types",
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "stripInternal": true
   },
-  "include": [ "src/**/*" ]
+  "include": [ "src/**/*" ],
 }

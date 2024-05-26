@@ -1,6 +1,6 @@
 {
   "name": "intel_hex_386",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Read and Write intel hex 386 files",
   "main": "dist/index.js",
   "type": "module",
@@ -25,13 +25,14 @@
   "contributors": [],
   "scripts": {
     "build": "tsc;",
-    "dev": "tsc; node dist/index.js"
+    "dev": "tsc; node dist/index.js",
+    "test": "tsc; clear; node node_modules/ncc_common/dist/test/runner.mjs;"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "ncc_common": "^1.0.0"
+    "ncc_common": "file:../ncc_common"
   }
 }
